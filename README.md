@@ -3,7 +3,7 @@ This is a code repository for the files used in my Conf42 observability presenta
 
 
 ## Requirements
-This setups up clang and ebpf packages for your environment
+This sets up clang and ebpf packages for your environment
 
 ```shell
 sudo apt update
