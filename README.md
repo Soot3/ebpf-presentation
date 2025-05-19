@@ -14,8 +14,8 @@ sudo apt install clang llvm libc6-dev-i386 libbpf-dev xdp-tools linux-headers-$(
 - Compile and Attach the ebpf program
 
 ```shell
-clang -O2 -g -Wall -target bpf -c packet_logger\logger.c -o packet_logger\logger.o
-sudo xdp-loader load -m skb lo logger.o
+clang -O2 -g -Wall -target bpf -c packet_logger/logger.c -o packet_logger/logger.o
+sudo xdp-loader load -m skb lo packet_logger/logger.o
 ```
 
 - Check that it was successfully attached
@@ -32,11 +32,12 @@ ping -I lo 127.0.0.1
 
 The program will log traffic with info on the packet received.
 This information is saved in a BPF map.
-Check it out. Maps created would be "packet events" and "packet" 
+Check it out. Maps created would be "packet_counters" and "packet_events" 
 
 ```shell
 sudo bpftool map list
-
+```
+```shell
 sudo bpftool map dump id <map_id>
 ```
 These maps can be processed by userspace programs and compiled with
@@ -47,7 +48,7 @@ observability tools.
 We will be using nginx as a web service and tracking access to the 
 nginx files.
 
-- Install Nginx Create html files
+- Install Nginx 
 
 ```shell
 sudo apt-get install -y nginx
@@ -71,7 +72,7 @@ echo "Test page 3" | sudo tee /var/www/html/test/page3.html
 ```
 - Run the program
 ```shell
-sudo python3 trace_openat.py
+sudo python3 openat_tracing/trace_py.py
 ```
 - Test from another terminal or machine
 
